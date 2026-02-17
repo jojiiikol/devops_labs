@@ -1,0 +1,12 @@
+import uvicorn
+from fastapi import FastAPI
+from .routers.notes import router as notes_router
+from .routers.db import router as db_router
+
+app = FastAPI()
+app.include_router(notes_router)
+app.include_router(db_router)
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
