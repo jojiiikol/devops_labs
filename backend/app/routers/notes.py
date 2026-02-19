@@ -1,26 +1,34 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
+
+from ..entries.schemas import CreateNoteSchema, CreateNoteInputSchema, UpdateNoteSchema, oauth2_scheme, UserSchema
+from ..services.note import get_note_service, NoteService
+from ..services.token import get_current_user
 
 router = APIRouter(prefix="/note",
                    tags=["note"])
 
 
-@router.get("/", tags=["note"])
-async def get_notes():
-    return {"notes": ["alala", "alala", "alala"]}
+@router.get("/")
+async def get_notes(token: str = Depends(get_current_user), service: NoteService = Depends(get_note_service)):
+    result = await service.get_all()
+    return result
 
-@router.get("/id", tags=["note"])
-async def get_note(id: int):
-    return {"note": "1"}
+@router.get("/{id}")
+async def get_note(id: int, service: NoteService = Depends(get_note_service)):
+    note = await service.get_by_id(id)
+    return note
 
-@router.post("/", tags=["note"])
-async def create_note():
-    return {"note": "1"}
+@router.post("/")
+async def create_note(note: CreateNoteInputSchema, service: NoteService = Depends(get_note_service)):
+    result = await service.create(note)
+    return result
 
-@router.put("/", tags=["note"])
-async def update_note():
-    return {"note": "1"}
+@router.put("/{id}")
+async def update_note(id: int, note: UpdateNoteSchema, service: NoteService = Depends(get_note_service)):
+    result = await service.update(id, note)
+    return result
 
-@router.delete("/", tags=["note"])
-async def delete_note():
-    return {"note": "1"}
+@router.delete("/{id}")
+async def delete_note(id: int, service: NoteService = Depends(get_note_service)):
+    await service.delete(id)
 

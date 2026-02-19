@@ -10,6 +10,10 @@ class Settings:
     DB_USER: str = os.getenv("DB_USER")
     DB_PASSWORD: str = os.getenv("DB_PASSWORD")
 
+    AUTH_SECRET_KEY: str = os.getenv("AUTH_SECRET_KEY")
+    AUTH_ALGORITHM: str = os.getenv("AUTH_ALGORITHM")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+
     @property
     def SYNC_DB_URL(self):
         return f"postgresql+psycopg2://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
@@ -17,6 +21,8 @@ class Settings:
     @property
     def ASYNC_DB_URL(self):
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
+    print(AUTH_SECRET_KEY)
 
 settings = Settings()
 
