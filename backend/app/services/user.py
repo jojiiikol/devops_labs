@@ -29,7 +29,7 @@ class UserService:
     async def get_by_username(self, username: str):
         user_model = await self.repository.get_by_username(username)
         if user_model:
-            return CreateUserSchema.model_validate(user_model, from_attributes=True)
+            return UserSchema.model_validate(user_model, from_attributes=True)
         raise HTTPException(status_code=404, detail="User not found")
 
     async def create(self, user: CreateUserInputSchema):

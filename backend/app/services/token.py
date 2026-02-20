@@ -30,14 +30,12 @@ class TokenService:
         return {"access_token": access_token, "token_type": "bearer"}
 
     async def get_current_user(self, token: str):
-        print(token)
         try:
             payload = jwt.decode(token, settings.AUTH_SECRET_KEY, algorithms=[settings.AUTH_ALGORITHM])
             username = payload.get("sub")
         except InvalidTokenError:
             raise HTTPException(status_code=401)
         user = await self.user_service.get_by_username(username)
-        print(user)
         return user
 
 def get_token_service(user_service: UserService = Depends(get_user_service)):

@@ -41,7 +41,6 @@ class NoteSchema(BaseModel):
 class CreateNoteInputSchema(BaseModel):
     title: str
     description: tp.Optional[str] = None
-    user_id: int
 
 class CreateNoteSchema(BaseModel):
     title: str
