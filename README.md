@@ -13,7 +13,7 @@
 1. Создать файл .env в папке backend
 2. Установить переменные в файл по примеру из .env.template
 ### Создание схемы БД
-```python -m app.db.db```
+```python -m backend.app.db.db```
 Скрипт создаст схему БД и определит пользователя admin:admin
 ### Запуск
-```python -m app.main```
+```python -m backend.app.main```
