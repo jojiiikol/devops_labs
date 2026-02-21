@@ -4,7 +4,7 @@
 ## Локальный запуск
 ### Клон проекта
 ```git clone https://github.com/jojiiikol/devops_labs```
-### Установка зависимстей
+### Установка зависимостей
 1. ```cd backend```
 2. ```python -m venv .venv```
 3. ```source .venv/bin/activate``` или ```.venv/Scripts/activate```
