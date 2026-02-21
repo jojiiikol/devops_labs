@@ -23,8 +23,8 @@ class UserService:
     async def get_by_id(self, id: int):
         user_model = await self.repository.get_by_id(id)
         if user_model:
-            return UserAdditionalSchema.model_validate(user_model, from_attributes=True)
-        return HTTPException(status_code=404, detail="User not found")
+            return UserSchema.model_validate(user_model, from_attributes=True)
+        raise HTTPException(status_code=404, detail="User not found")
 
     async def get_by_username(self, username: str):
         user_model = await self.repository.get_by_username(username)
@@ -32,7 +32,16 @@ class UserService:
             return UserSchema.model_validate(user_model, from_attributes=True)
         raise HTTPException(status_code=404, detail="User not found")
 
+    async def get_by_username_additional(self, username: str):
+        user_model = await self.repository.get_by_username_additional(username)
+        if user_model:
+            return UserAdditionalSchema.model_validate(user_model, from_attributes=True)
+        raise HTTPException(status_code=404, detail="User not found")
+
     async def create(self, user: CreateUserInputSchema):
+        exists_user = self.repository.get_by_username(user.username)
+        if exists_user:
+            raise HTTPException(status_code=400, detail="User already exists")
         create_user = CreateUserSchema(
             username=user.username,
             password=self.get_password_hash(user.password),
@@ -42,14 +51,15 @@ class UserService:
         return create_user
 
     async def update(self, id: int, user: UpdateUserInputSchema):
+        user.password = self.get_password_hash(user.password) if user.password else None
         updated_user = await self.repository.update(id, user)
         if updated_user:
             return UserSchema.model_validate(updated_user, from_attributes=True)
-        return HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="User not found")
 
     async def delete(self, id: int):
         await self.repository.delete(id)
-        raise HTTPException(status_code=204)
+        raise HTTPException(status_code=204, detail="User deleted")
 
     async def authenticate(self, username: str, password: str):
         user = await self.repository.get_by_username(username)

@@ -24,6 +24,11 @@ class NoteRepository:
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
+    async def get_by_user(self, user_id: int):
+        query = select(NotesTable).where(NotesTable.user_id == user_id).options(selectinload(NotesTable.user))
+        result = await self.session.execute(query)
+        return result.scalars().all()
+
     async def update(self, note_id: int, note: UpdateNoteSchema):
         query = select(NotesTable).where(NotesTable.id == note_id).options(selectinload(NotesTable.user))
         result = await self.session.execute(query)
@@ -34,7 +39,7 @@ class NoteRepository:
                 setattr(note_model, key, value)
             note_model.updated_at = datetime.now()
             await self.session.commit()
-            await self.session.refresh(note_model)
+            await self.session.refresh(note_model, ["user"])
             return note_model
         return None
 

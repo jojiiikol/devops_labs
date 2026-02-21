@@ -1,7 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
 from .routers.notes import router as notes_router
-from .routers.db import router as db_router
 from .routers.user import router as user_router
 from .routers.token import router as token_router
 
@@ -9,7 +8,6 @@ app = FastAPI()
 app.include_router(token_router)
 app.include_router(notes_router)
 app.include_router(user_router)
-app.include_router(db_router)
 
 
 if __name__ == "__main__":

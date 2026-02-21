@@ -7,7 +7,8 @@ from sqlalchemy.orm import selectinload, joinedload
 
 from ..entries.models import NotesTable, UserTable
 from ..db.db import db
-from ..entries.schemas import NoteSchema, CreateNoteSchema, UpdateNoteSchema, CreateNoteInputSchema, CreateUserSchema
+from ..entries.schemas import NoteSchema, CreateNoteSchema, UpdateNoteSchema, CreateNoteInputSchema, CreateUserSchema, \
+    UpdateUserInputSchema
 
 
 class UserRepository:
@@ -20,16 +21,21 @@ class UserRepository:
         return result.unique().scalars().all()
 
     async def get_by_id(self, user_id: int) -> NotesTable:
-        query = select(UserTable).where(UserTable.id == user_id).options(joinedload(UserTable.notes))
+        query = select(UserTable).where(UserTable.id == user_id)
         result = await self.session.execute(query)
-        return result.unique().scalar_one_or_none()
+        return result.scalar_one_or_none()
 
     async def get_by_username(self, username: str) -> NotesTable:
         query = select(UserTable).where(UserTable.username == username)
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
-    async def update(self, user_id: int, user: UpdateNoteSchema):
+    async def get_by_username_additional(self, username: str) -> NotesTable:
+        query = select(UserTable).where(UserTable.username == username).options(joinedload(UserTable.notes))
+        result = await self.session.execute(query)
+        return result.unique().scalar_one_or_none()
+
+    async def update(self, user_id: int, user: UpdateUserInputSchema):
         query = select(UserTable).where(UserTable.id == user_id)
         result = await self.session.execute(query)
         user_model = result.scalar_one_or_none()
