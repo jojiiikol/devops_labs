@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.testing.pickleable import User
 
-from ..entries.schemas import CreateNoteSchema, CreateNoteInputSchema, UpdateNoteSchema, oauth2_scheme, UserSchema
+from ..entries.schemas import CreateNoteSchema, CreateNoteInputSchema, UpdateNoteSchema, oauth2_scheme, UserSchema, \
+    NoteSchema
 from ..services.note import get_note_service, NoteService
 from ..services.pemissions import NotePermission, get_note_permission
 from ..services.token import get_current_user
@@ -11,7 +12,7 @@ router = APIRouter(prefix="/note",
 
 
 @router.get("/")
-async def get_notes(permission: NotePermission = Depends(get_note_permission)):
+async def get_notes(permission: NotePermission = Depends(get_note_permission)) -> list[NoteSchema]:
     '''
         Эндпоинт для получения всех заметок в системе. Доступно только админу
     '''
@@ -19,7 +20,7 @@ async def get_notes(permission: NotePermission = Depends(get_note_permission)):
     return result
 
 @router.get("/me")
-async def get_my_notes(user: UserSchema = Depends(get_current_user), service: NoteService = Depends(get_note_service)):
+async def get_my_notes(user: UserSchema = Depends(get_current_user), service: NoteService = Depends(get_note_service)) -> list[NoteSchema]:
     '''
         Эндпоинт для получения всех заметок аутентифицированного пользователя
     '''
@@ -27,14 +28,14 @@ async def get_my_notes(user: UserSchema = Depends(get_current_user), service: No
     return result
 
 @router.get("/{id}")
-async def get_note(id: int, permission_service: NotePermission = Depends(get_note_permission)):
+async def get_note(id: int, permission_service: NotePermission = Depends(get_note_permission)) -> NoteSchema:
     '''
         Эндпоинт для получения определенной заметки по id. Доступно создателю
     '''
     return await permission_service.is_owner_read(id)
 
 @router.post("/")
-async def create_note(note: CreateNoteInputSchema, service: NoteService = Depends(get_note_service), user: UserSchema = Depends(get_current_user)):
+async def create_note(note: CreateNoteInputSchema, service: NoteService = Depends(get_note_service), user: UserSchema = Depends(get_current_user)) -> CreateNoteSchema:
     '''
         Эндпоинт для получения создания заметки. Доступно аутентифицированному пользователю
     '''
@@ -42,7 +43,7 @@ async def create_note(note: CreateNoteInputSchema, service: NoteService = Depend
     return result
 
 @router.put("/{id}")
-async def update_note(id: int, note: UpdateNoteSchema, permission_service: NotePermission = Depends(get_note_permission)):
+async def update_note(id: int, note: UpdateNoteSchema, permission_service: NotePermission = Depends(get_note_permission)) -> NoteSchema:
     '''
         Эндпоинт для обновления заметки. Доступно создателю
     '''

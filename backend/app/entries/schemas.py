@@ -9,6 +9,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 class UserSchema(BaseModel):
     id: int
     username: str
+    created_at: datetime
 
 class CreateUserInputSchema(BaseModel):
     username: str

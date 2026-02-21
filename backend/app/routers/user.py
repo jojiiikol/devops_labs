@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 
 from ..entries.schemas import CreateUserInputSchema, \
-    UpdateUserInputSchema, UserSchema
+    UpdateUserInputSchema, UserSchema, CreateUserSchema
 from ..services.pemissions import UserPermission, get_user_permission
 from ..services.token import get_current_user
 from ..services.user import UserService, get_user_service
@@ -11,7 +11,7 @@ router = APIRouter(prefix="/user",
 
 
 @router.get("/")
-async def get_users(service: UserService = Depends(get_user_service)):
+async def get_users(service: UserService = Depends(get_user_service)) -> list[UserSchema]:
     '''
         Эндпоинт для получения списка пользователей.
     '''
@@ -19,14 +19,14 @@ async def get_users(service: UserService = Depends(get_user_service)):
     return result
 
 @router.get("/me")
-async def get_me(user: UserSchema = Depends(get_current_user)):
+async def get_me(user: UserSchema = Depends(get_current_user)) -> UserSchema:
     '''
         Эндпоинт для информации о себе.
     '''
     return user
 
 @router.get("/{id}")
-async def get_user(id: int, service: UserService = Depends(get_user_service)):
+async def get_user(id: int, service: UserService = Depends(get_user_service)) -> UserSchema:
     '''
         Эндпоинт для информации о юзере по id.
     '''
@@ -34,7 +34,7 @@ async def get_user(id: int, service: UserService = Depends(get_user_service)):
     return user
 
 @router.post("/")
-async def create_user(user: CreateUserInputSchema, service: UserService = Depends(get_user_service)):
+async def create_user(user: CreateUserInputSchema, service: UserService = Depends(get_user_service)) -> CreateUserSchema:
     '''
         Эндпоинт для создания пользователя.
     '''
@@ -42,7 +42,7 @@ async def create_user(user: CreateUserInputSchema, service: UserService = Depend
     return result
 
 @router.put("/{id}")
-async def update_user(id: int, user: UpdateUserInputSchema, permission: UserPermission = Depends(get_user_permission)):
+async def update_user(id: int, user: UpdateUserInputSchema, permission: UserPermission = Depends(get_user_permission)) -> UserSchema:
     '''
         Эндпоинт для обновления данных о юзере. Доступно только к своему профилю
     '''
