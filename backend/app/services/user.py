@@ -39,7 +39,7 @@ class UserService:
         raise HTTPException(status_code=404, detail="User not found")
 
     async def create(self, user: CreateUserInputSchema):
-        exists_user = self.repository.get_by_username(user.username)
+        exists_user = await self.repository.get_by_username(user.username)
         if exists_user:
             raise HTTPException(status_code=400, detail="User already exists")
         create_user = CreateUserSchema(
