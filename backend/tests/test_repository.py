@@ -86,6 +86,13 @@ async def test_update_user(async_session: AsyncSession):
     assert user.username == "new_username"
     assert user.password == "new_password"
 
+    user = await repo.update(1, UpdateUserInputSchema())
+    assert user.username == "new_username"
+    assert user.password == "new_password"
+
+    user = await repo.update(2, UpdateUserInputSchema(username="new_username", password="new_password"))
+    assert user is None
+
 @pytest.mark.asyncio
 async def test_update_user(async_session: AsyncSession):
     repo = UserRepository(async_session)
