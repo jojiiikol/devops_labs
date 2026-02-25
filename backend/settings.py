@@ -11,8 +11,8 @@ class Settings:
     DB_PASSWORD: str = os.getenv("DB_PASSWORD")
 
     AUTH_SECRET_KEY: str = os.getenv("AUTH_SECRET_KEY")
-    AUTH_ALGORITHM: str = os.getenv("AUTH_ALGORITHM")
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+    AUTH_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     @property
     def SYNC_DB_URL(self):
