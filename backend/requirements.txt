@@ -7,6 +7,7 @@ argon2-cffi-bindings==25.1.0
 async-timeout==5.0.1
 asyncpg==0.31.0
 backports.asyncio.runner==1.2.0
+build==1.4.0
 certifi==2026.1.4
 cffi==2.0.0
 click==8.1.8
@@ -25,6 +26,7 @@ httpcore==1.0.9
 httptools==0.7.1
 httpx==0.28.1
 idna==3.11
+importlib_metadata==8.7.1
 iniconfig==2.1.0
 Jinja2==3.1.6
 markdown-it-py==3.0.0
@@ -40,6 +42,7 @@ pydantic-settings==2.11.0
 pydantic_core==2.41.5
 Pygments==2.19.2
 PyJWT==2.11.0
+pyproject_hooks==1.2.0
 pytest==8.4.2
 pytest-asyncio==1.2.0
 pytest-cov==7.0.0
@@ -62,3 +65,4 @@ uvicorn==0.39.0
 uvloop==0.22.1
 watchfiles==1.1.1
 websockets==15.0.1
+zipp==3.23.0

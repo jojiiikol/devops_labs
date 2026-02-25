@@ -1,0 +1,56 @@
+name: backend_CI
+on:
+  push:
+    paths:
+      - 'backend/**'
+jobs:
+  test:
+    runs-on:
+      ubuntu-latest
+    steps:
+      - name: checkout_repository
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            .github
+            backend
+
+      - name: python_install
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.9.12'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: install_deps
+        run: pip install -r backend/requirements.txt
+
+      - name: test
+        run: pytest --cov=app
+
+  build:
+    runs-on:
+      ubuntu-latest
+    steps:
+      - name: checkout_repository
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            .github
+            backend
+
+      - name: python_install
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.9.12'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: install_deps
+        run: pip install -r backend/requirements.txt
+
+      - name: Build_package
+        run: |
+          cd ./backend
+          python -m build
+
