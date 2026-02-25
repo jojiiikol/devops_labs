@@ -29,6 +29,8 @@ async def async_session():
     async with engine.begin() as conn:
         await conn.run_sync(BaseTable.metadata.drop_all)
 
+    await engine.dispose()
+
 
 @pytest.mark.asyncio
 async def test_create_user(async_session: AsyncSession):
