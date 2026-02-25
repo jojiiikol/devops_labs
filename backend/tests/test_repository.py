@@ -1,14 +1,12 @@
 from datetime import datetime
 
 import pytest
-import asyncio
 
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from backend.app.db.db import db
-from backend.app.entries.models import BaseTable, UserTable
+from backend.app.entries.models import BaseTable
 from backend.app.entries.schemas import CreateUserSchema, UpdateUserInputSchema, UpdateNoteSchema, CreateNoteSchema
 from backend.app.repository.note import NoteRepository
 from backend.app.repository.user import UserRepository
