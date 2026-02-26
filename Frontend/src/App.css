@@ -1,0 +1,163 @@
+ .app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.app-logo {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.app-nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.app-nav a {
+  color: #e5e7eb;
+}
+
+.app-nav-username {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  background: radial-gradient(circle at top, #1e293b, #020617);
+  color: #e5e7eb;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-card {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  color: #cbd5f5;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #334155;
+  background: rgba(15, 23, 42, 0.7);
+  color: #e5e7eb;
+}
+
+.form-field textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  border-radius: 999px;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  border-radius: 999px;
+  border: 1px solid #475569;
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  color: #e5e7eb;
+}
+
+.btn-danger {
+  border-radius: 999px;
+  border: 1px solid #b91c1c;
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  color: #fecaca;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.note-card {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  cursor: pointer;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.8);
+  border-color: #4f46e5;
+}
+
+.note-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.note-text {
+  font-size: 0.9rem;
+  color: #cbd5f5;
+}
+
+.notes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.helper-text {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
