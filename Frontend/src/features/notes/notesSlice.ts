@@ -41,11 +41,12 @@ function safeNumber(v: unknown): number {
 
 function normalizeNote(raw: unknown): Note {
   const n = raw as Record<string, unknown>
+  const user = n.user as Record<string, unknown> | undefined
   return {
     id: safeNumber(n.id),
     title: safeString(n.title),
-    text: safeString(n.text ?? n.content),
-    user_id: safeNumber(n.user_id ?? n.userId),
+    text: safeString(n.description ?? n.text ?? n.content),
+    user_id: safeNumber(n.user_id ?? n.userId ?? user?.id),
   }
 }
 
@@ -114,7 +115,7 @@ export const createNote = createAsyncThunk<
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ title, text }),
+    body: JSON.stringify({ title, description: text }),
   })
 
   if (!response.ok) {
@@ -136,7 +137,7 @@ export const updateNote = createAsyncThunk<
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ title, text }),
+    body: JSON.stringify({ title, description: text }),
   })
 
   if (!response.ok) {
