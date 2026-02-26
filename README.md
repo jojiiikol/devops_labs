@@ -5,7 +5,7 @@
 ### Клон проекта
 ```git clone https://github.com/jojiiikol/devops_labs```
 ### Установка зависимостей
-1. ```python -m venv backend/.venv```
+1. ```ppython -m venv backend/.venv```
 2. ```source .venv/bin/activate``` или ```.venv/Scripts/activate```
 3. ```pip install -r requirements.txt```
 ### Настройка виртуальных переменных

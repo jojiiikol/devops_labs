@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 export interface Note {
   id: number
@@ -27,6 +27,28 @@ interface WithToken {
   token: string
 }
 
+function safeString(v: unknown): string {
+  if (typeof v === 'string') return v
+  if (v === null || v === undefined) return ''
+  return String(v)
+}
+
+function safeNumber(v: unknown): number {
+  if (typeof v === 'number' && Number.isFinite(v)) return v
+  const n = Number(v)
+  return Number.isFinite(n) ? n : 0
+}
+
+function normalizeNote(raw: unknown): Note {
+  const n = raw as Record<string, unknown>
+  return {
+    id: safeNumber(n.id),
+    title: safeString(n.title),
+    text: safeString(n.text ?? n.content),
+    user_id: safeNumber(n.user_id ?? n.userId),
+  }
+}
+
 export const fetchMyNotes = createAsyncThunk<Note[], WithToken, { rejectValue: string }>(
   'notes/fetchMy',
   async ({ token }, { rejectWithValue }) => {
@@ -40,8 +62,8 @@ export const fetchMyNotes = createAsyncThunk<Note[], WithToken, { rejectValue: s
       return rejectWithValue('Не удалось загрузить заметки')
     }
 
-    const data = (await response.json()) as Note[]
-    return data
+    const data = (await response.json()) as unknown
+    return Array.isArray(data) ? data.map(normalizeNote) : []
   },
 )
 
@@ -58,8 +80,8 @@ export const fetchAllNotes = createAsyncThunk<Note[], WithToken, { rejectValue: 
       return rejectWithValue('Не удалось загрузить все заметки')
     }
 
-    const data = (await response.json()) as Note[]
-    return data
+    const data = (await response.json()) as unknown
+    return Array.isArray(data) ? data.map(normalizeNote) : []
   },
 )
 
@@ -76,8 +98,8 @@ export const fetchNoteById = createAsyncThunk<Note, { token: string; id: number 
       return rejectWithValue('Не удалось загрузить заметку')
     }
 
-    const data = (await response.json()) as Note
-    return data
+    const data = (await response.json()) as unknown
+    return normalizeNote(data)
   },
 )
 
@@ -99,8 +121,8 @@ export const createNote = createAsyncThunk<
     return rejectWithValue('Не удалось создать заметку')
   }
 
-  const data = (await response.json()) as Note
-  return data
+  const data = (await response.json()) as unknown
+  return normalizeNote(data)
 })
 
 export const updateNote = createAsyncThunk<
@@ -121,8 +143,8 @@ export const updateNote = createAsyncThunk<
     return rejectWithValue('Не удалось обновить заметку')
   }
 
-  const data = (await response.json()) as Note
-  return data
+  const data = (await response.json()) as unknown
+  return normalizeNote(data)
 })
 
 export const deleteNote = createAsyncThunk<

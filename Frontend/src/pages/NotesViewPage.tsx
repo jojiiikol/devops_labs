@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../store'
-import { fetchAllNotes, fetchMyNotes, Note } from '../features/notes/notesSlice'
+import { fetchAllNotes, fetchMyNotes, type Note } from '../features/notes/notesSlice'
 
 const NotesViewPage = () => {
   const dispatch = useAppDispatch()
@@ -63,7 +63,10 @@ const NotesViewPage = () => {
           >
             <div className="note-title">{note.title}</div>
             <div className="note-text">
-              {note.text.length > 120 ? `${note.text.slice(0, 120)}...` : note.text}
+              {(() => {
+                const text = note.text ?? ''
+                return text.length > 120 ? `${text.slice(0, 120)}...` : text
+              })()}
             </div>
           </div>
         ))}
