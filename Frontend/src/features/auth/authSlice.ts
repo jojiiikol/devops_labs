@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { clearAuthTokenCookie, setAuthTokenCookie } from '../../utils/authTokenCookie'
 
 export interface User {
   id: number
@@ -44,6 +45,7 @@ export const login = createAsyncThunk<
   }
 
   const data = (await response.json()) as { access_token: string; token_type: string }
+  setAuthTokenCookie(data.access_token)
   return data
 })
 
@@ -62,6 +64,9 @@ export const fetchMe = createAsyncThunk<User, void, { state: { auth: AuthState }
     })
 
     if (!response.ok) {
+      if (response.status === 401 || response.status === 403) {
+        clearAuthTokenCookie()
+      }
       return rejectWithValue('Не удалось загрузить данные пользователя')
     }
 
@@ -128,6 +133,8 @@ const authSlice = createSlice({
       })
       .addCase(fetchMe.rejected, (state, action) => {
         state.status = 'failed'
+        state.user = null
+        state.accessToken = null
         state.error = action.payload ?? 'Ошибка загрузки пользователя'
       })
       .addCase(register.pending, (state) => {
