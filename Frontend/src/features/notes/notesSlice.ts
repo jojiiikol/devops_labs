@@ -5,6 +5,7 @@ export interface Note {
   title: string
   text: string
   user_id: number
+  username?: string
 }
 
 interface NotesState {
@@ -47,6 +48,7 @@ function normalizeNote(raw: unknown): Note {
     title: safeString(n.title),
     text: safeString(n.description ?? n.text ?? n.content),
     user_id: safeNumber(n.user_id ?? n.userId ?? user?.id),
+    username: safeString(user?.username),
   }
 }
 

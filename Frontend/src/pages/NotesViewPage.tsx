@@ -8,19 +8,21 @@ const NotesViewPage = () => {
   const navigate = useNavigate()
   const { accessToken, user } = useAppSelector((state) => state.auth)
   const { items, status, error } = useAppSelector((state) => state.notes)
-  const [isAdminView, setIsAdminView] = useState(false)
+  const isAdmin = (user?.username ?? '').toLowerCase() === 'admin'
+  const [isAdminView, setIsAdminView] = useState<boolean | null>(null)
+  const effectiveAdminView = Boolean(isAdmin && (isAdminView ?? true))
 
   useEffect(() => {
     if (!accessToken) {
       navigate('/login')
       return
     }
-    if (user?.is_admin && isAdminView) {
+    if (effectiveAdminView) {
       void dispatch(fetchAllNotes({ token: accessToken }))
     } else {
       void dispatch(fetchMyNotes({ token: accessToken }))
     }
-  }, [accessToken, user, isAdminView, dispatch, navigate])
+  }, [accessToken, effectiveAdminView, dispatch, navigate])
 
   const handleCardClick = (note: Note) => {
     navigate(`/notes/${note.id}`)
@@ -35,13 +37,13 @@ const NotesViewPage = () => {
       <div className="notes-header">
         <h1 className="page-title">Заметки</h1>
         <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          {user?.is_admin && (
+          {isAdmin && (
             <button
               type="button"
               className="btn-secondary"
-              onClick={() => setIsAdminView((v) => !v)}
+              onClick={() => setIsAdminView((v) => !Boolean(v ?? true))}
             >
-              {isAdminView ? 'Показать только мои' : 'Показать все (админ)'}
+              {effectiveAdminView ? 'Показать только мои' : 'Показать все (админ)'}
             </button>
           )}
           <button type="button" className="btn-primary" onClick={handleCreateNew}>
@@ -62,6 +64,11 @@ const NotesViewPage = () => {
             role="button"
           >
             <div className="note-title">{note.title}</div>
+            {effectiveAdminView && (
+              <div className="helper-text" style={{ marginTop: '0.25rem' }}>
+                Автор: {note.username ?? `user #${note.user_id}`}
+              </div>
+            )}
             <div className="note-text">
               {(() => {
                 const text = note.text ?? ''
