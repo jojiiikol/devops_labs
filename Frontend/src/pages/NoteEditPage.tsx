@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../store'
 import { createNote, deleteNote, fetchNoteById, updateNote } from '../features/notes/notesSlice'
 
-function splitTitleAndBodyFromText(raw: string): { title: string; body: string } {
+export function splitTitleAndBodyFromText(raw: string): { title: string; body: string } {
   const normalized = raw.replace(/\r\n/g, '\n')
   const lines = normalized.split('\n')
   const title = (lines[0] ?? '').trim()
@@ -11,7 +11,7 @@ function splitTitleAndBodyFromText(raw: string): { title: string; body: string }
   return { title, body }
 }
 
-function composeTextFromTitleAndBody(title: string, body: string): string {
+export function composeTextFromTitleAndBody(title: string, body: string): string {
   const t = title.trim()
   const b = body ?? ''
   if (!t) return b
