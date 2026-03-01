@@ -12,7 +12,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      exclude: [...configDefaults.coverage.exclude, 'src/test/**'],
+      exclude: [...(configDefaults.coverage.exclude ?? []), 'src/test/**'],
     },
   },
 })
