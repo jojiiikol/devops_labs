@@ -1,0 +1,15 @@
+name: build-test_CI
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - 'Frontend/**'
+      - '.github/workflows/**'
+jobs:
+  backend:
+    uses: ./.github/workflows/backend-workflow.yaml
+
+
+  frontend:
+    needs: backend
+    uses: ./.github/workflows/frontend_workflow.yaml
