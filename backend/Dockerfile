@@ -2,19 +2,16 @@ FROM python:3.9-slim-bookworm
 WORKDIR /app
 ENV TZ='Europe/Moscow'\
     PYTHONDONTWRITEBYTECODE=1\
-    PYTHONUNBUFFERED=1\
-    PYTHONPATH=/app
+    PYTHONUNBUFFERED=1
 
 
 RUN apt-get update
 
-COPY settings.py ./app
-COPY app/db ./app
-COPY app/entries ./app
-COPY app/repository ./app
-COPY app/routers ./app
-COPY app/services ./app
+COPY . .
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
 
 
-
-ENTRYPOINT ["top", "-b"]
+CMD ["python", "-m", "app.main"]
