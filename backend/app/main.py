@@ -1,12 +1,25 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
+from .db.db import db
 from .routers.notes import router as notes_router
 from .routers.user import router as user_router
 from .routers.token import router as token_router
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Application starting up...")
+    print("init db schema...")
+    await db.init_tables()
+
+    yield
+
+    print("Application shutting down...")
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

@@ -49,13 +49,15 @@ pip install -r requirements.txt
 
 ### Создание схемы БД
 ```bash
-python -m backend.app.db.db
+cd backend
+python -m app.db.db
 ```
 Скрипт создаст схему БД и определит пользователя admin:admin
 
 ### Запуск
 ```bash
-python -m backend.app.main
+cd backend
+python -m app.main
 ```
 Swagger доступен по адресу `http://127.0.0.1:8000/docs#/`
 

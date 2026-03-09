@@ -21,21 +21,25 @@ class Database:
             yield session
 
     async def init_tables(self):
-        async with self.engine.begin() as conn:
-            await conn.run_sync(BaseTable.metadata.create_all)
+        try:
+            async with self.engine.begin() as conn:
+                await conn.run_sync(BaseTable.metadata.create_all)
 
-        async with self.session_factory() as session:
-            query = select(UserTable.id).limit(1)
-            result = await session.execute(query)
-            user = result.one_or_none()
-            if not user:
-                admin_user = UserTable(
-                    username="admin",
-                    password=PasswordHash.recommended().hash("admin"),
-                    created_at=datetime.now(),
-                )
-                session.add(admin_user)
-                await session.commit()
+            async with self.session_factory() as session:
+                query = select(UserTable.id).limit(1)
+                result = await session.execute(query)
+                user = result.one_or_none()
+                if not user:
+                    admin_user = UserTable(
+                        username="admin",
+                        password=PasswordHash.recommended().hash("admin"),
+                        created_at=datetime.now(),
+                    )
+                    session.add(admin_user)
+                    await session.commit()
+            print("Schema initialized successfully!")
+        except Exception as e:
+            print(e)
 
 
 db = Database()

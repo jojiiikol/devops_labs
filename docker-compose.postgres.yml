@@ -3,7 +3,7 @@ services:
     container_name: devops_labs_postgres
     build:
       context: .
-      dockerfile: docker/postgres/Dockerfile
+      dockerfile: postgres/Dockerfile
     env_file:
       - backend/.env
     ports:

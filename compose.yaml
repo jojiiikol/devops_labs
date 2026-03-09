@@ -1,0 +1,35 @@
+services:
+  postgres:
+    container_name: devops_labs_postgres
+    build:
+      context: .
+      dockerfile: postgres/Dockerfile
+    env_file:
+      - backend/.env
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$DB_USER -d $$DB_NAME"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    container_name: backend_app
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - postgres
+
+
+volumes:
+  pgdata:
