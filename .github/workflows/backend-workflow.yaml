@@ -25,7 +25,9 @@ jobs:
         run: pip install -r backend/requirements.txt
 
       - name: test
-        run: python -m pytest --cov=app
+        run: |
+          cd ./backend
+          python -m pytest --cov=app
 
   backend-build:
     runs-on:
