@@ -1,11 +1,10 @@
 from fastapi import Depends, HTTPException
 from starlette.status import HTTP_403_FORBIDDEN
-from watchfiles import awatch
 
-from backend.app.entries.schemas import NoteSchema, UserSchema, UpdateNoteSchema, UpdateUserInputSchema
-from backend.app.services.note import NoteService, get_note_service
-from backend.app.services.token import TokenService, get_token_service, get_current_user
-from backend.app.services.user import UserService, get_user_service
+from ..entries.schemas import UserSchema, UpdateNoteSchema, UpdateUserInputSchema
+from .note import NoteService, get_note_service
+from .token import get_current_user
+from .user import UserService, get_user_service
 
 
 class NotePermission:

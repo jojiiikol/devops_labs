@@ -9,7 +9,6 @@ jobs:
   backend:
     uses: ./.github/workflows/backend-workflow.yaml
 
-
   frontend:
     needs: backend
     uses: ./.github/workflows/frontend_workflow.yaml

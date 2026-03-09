@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.testing.pickleable import User
+from fastapi import APIRouter, Depends
 
-from ..entries.schemas import CreateNoteSchema, CreateNoteInputSchema, UpdateNoteSchema, oauth2_scheme, UserSchema, \
+from ..entries.schemas import CreateNoteSchema, CreateNoteInputSchema, UpdateNoteSchema, UserSchema, \
     NoteSchema
 from ..services.note import get_note_service, NoteService
 from ..services.pemissions import NotePermission, get_note_permission

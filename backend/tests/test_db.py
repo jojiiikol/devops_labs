@@ -5,8 +5,8 @@ from pwdlib import PasswordHash
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-from backend.app.db.db import Database
-from backend.app.entries.models import UserTable
+from ..app.db.db import Database
+from ..app.entries.models import UserTable
 
 
 @pytest.mark.asyncio

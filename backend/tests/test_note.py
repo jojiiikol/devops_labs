@@ -3,17 +3,16 @@ from unittest.mock import AsyncMock
 
 import pytest
 from fastapi import HTTPException
-from sqlalchemy.testing.pickleable import User
 from starlette.testclient import TestClient
 
-from backend.app.entries.schemas import NoteSchema, UserSchema, CreateNoteSchema, CreateNoteInputSchema, \
+from ..app.entries.schemas import NoteSchema, UserSchema, CreateNoteSchema, CreateNoteInputSchema, \
     UpdateNoteSchema
-from backend.app.main import app
-from backend.app.repository.note import NoteRepository
-from backend.app.services.note import NoteService, get_note_service
-from backend.app.entries.models import NotesTable, UserTable
-from backend.app.services.pemissions import get_note_permission
-from backend.app.services.token import get_current_user
+from ..app.main import app
+from ..app.repository.note import NoteRepository
+from ..app.services.note import NoteService, get_note_service
+from ..app.entries.models import NotesTable, UserTable
+from ..app.services.pemissions import get_note_permission
+from ..app.services.token import get_current_user
 
 
 @pytest.fixture

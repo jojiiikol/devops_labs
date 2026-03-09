@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
-from backend.app.services.token import TokenService, get_token_service
+from ..services.token import TokenService, get_token_service
 
 router = APIRouter(prefix="/token", tags=["Token"])
 

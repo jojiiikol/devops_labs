@@ -1,13 +1,11 @@
-from datetime import datetime
-
 from fastapi import Depends
-from sqlalchemy import select, delete, update
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload, joinedload
+from sqlalchemy.orm import joinedload
 
 from ..entries.models import NotesTable, UserTable
 from ..db.db import db
-from ..entries.schemas import NoteSchema, CreateNoteSchema, UpdateNoteSchema, CreateNoteInputSchema, CreateUserSchema, \
+from ..entries.schemas import CreateUserSchema, \
     UpdateUserInputSchema
 
 

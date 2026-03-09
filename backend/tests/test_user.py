@@ -8,11 +8,11 @@ from backend.app.entries.models import UserTable
 import pytest
 from starlette.testclient import TestClient
 
-from backend.app.entries.schemas import CreateUserInputSchema, UpdateUserInputSchema, UserSchema, CreateUserSchema
-from backend.app.main import app
-from backend.app.repository.user import UserRepository
-from backend.app.services.pemissions import get_user_permission
-from backend.app.services.user import UserService, get_user_service
+from ..app.entries.schemas import CreateUserInputSchema, UpdateUserInputSchema, UserSchema, CreateUserSchema
+from ..app.main import app
+from ..app.repository.user import UserRepository
+from ..app.services.pemissions import get_user_permission
+from ..app.services.user import UserService, get_user_service
 
 
 @pytest.fixture

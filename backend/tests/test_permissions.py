@@ -1,12 +1,10 @@
 import pytest
 from unittest.mock import AsyncMock
 from fastapi import HTTPException
-from starlette.status import HTTP_403_FORBIDDEN
 from datetime import datetime
 
-from backend.app.entries.schemas import UserSchema, NoteSchema, UpdateNoteSchema, UpdateUserInputSchema
-from backend.app.services.note import NoteService
-from backend.app.services.pemissions import NotePermission, UserPermission
+from ..app.entries.schemas import UserSchema, NoteSchema, UpdateNoteSchema, UpdateUserInputSchema
+from ..app.services.pemissions import NotePermission, UserPermission
 
 @pytest.fixture
 def test_user():

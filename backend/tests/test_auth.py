@@ -6,12 +6,12 @@ from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from starlette.testclient import TestClient
 
-from backend.app.entries.schemas import CreateUserSchema, UserSchema
-from backend.app.main import app
-from backend.app.entries.models import UserTable
-from backend.app.repository.user import UserRepository
-from backend.app.services.token import TokenService
-from backend.app.services.user import UserService, get_user_service
+from ..app.entries.schemas import CreateUserSchema, UserSchema
+from ..app.main import app
+from ..app.entries.models import UserTable
+from ..app.repository.user import UserRepository
+from ..app.services.token import TokenService
+from ..app.services.user import UserService, get_user_service
 from unittest.mock import AsyncMock
 
 from backend.settings import settings

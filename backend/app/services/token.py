@@ -5,9 +5,9 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from jwt import InvalidTokenError
 
-from backend.app.entries.schemas import oauth2_scheme
-from backend.app.services.user import UserService, get_user_service
-from backend.settings import settings
+from ..entries.schemas import oauth2_scheme
+from .user import UserService, get_user_service
+from ...settings import settings
 
 
 class TokenService:
