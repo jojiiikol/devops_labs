@@ -1,9 +1,6 @@
 name: frontend_CI
 on:
-  push:
-    paths:
-      - 'Frontend/**'
-      - '.github/workflows/**'
+  workflow_call:
 jobs:
   test:
     runs-on:
