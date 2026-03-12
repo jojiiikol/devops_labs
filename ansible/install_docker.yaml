@@ -1,0 +1,49 @@
+- name: install docker playbook
+  hosts: yandex_machines
+  become: yes
+  tasks:
+    - name: Apt update
+      apt:
+        update_cache: true
+
+    - name: Apt get
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - gnupg
+        state: present
+
+    - name: add GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: add docker repository to apt
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: install docker
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose
+        state: latest
+        update_cache: yes
+
+    - name: Start docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add user to group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes

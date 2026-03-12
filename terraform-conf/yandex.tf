@@ -11,6 +11,11 @@ variable "zone" {
   default = "ru-central1-b"
 }
 
+variable "folder_id" {
+  type        = string
+  default     = "b1gcal6rpf8icohd8peg"
+}
+
 resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
@@ -24,9 +29,13 @@ resource "yandex_vpc_subnet" "subnet-1" {
 
 
 provider "yandex" {
-  folder_id = "b1gcal6rpf8icohd8peg"
+  folder_id = var.folder_id
   service_account_key_file = "authorized_key.json"
   zone = var.zone
+}
+
+data "yandex_compute_image" "ubuntu" {
+  family = "ubuntu-2204-lts"
 }
 
 resource "yandex_compute_disk" "boot-disk-1" {
@@ -34,7 +43,7 @@ resource "yandex_compute_disk" "boot-disk-1" {
   type     = "network-hdd"
   zone     = var.zone
   size     = "20"
-  image_id = "fd84kd8dcu6tmnhbeebv"
+  image_id = data.yandex_compute_image.ubuntu.id
 }
 
 resource "yandex_compute_instance" "vm-1" {

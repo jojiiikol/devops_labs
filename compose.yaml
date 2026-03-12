@@ -1,9 +1,7 @@
 services:
   postgres:
     container_name: devops_labs_postgres
-    build:
-      context: .
-      dockerfile: postgres/Dockerfile
+    image: jojiiikol/note-postgres:latest
     env_file:
       - backend/.env
     ports:
@@ -19,9 +17,7 @@ services:
 
   backend:
     container_name: backend_app
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: jojiiikol/note-backend:latest
     env_file:
       - ./backend/.env
     ports:

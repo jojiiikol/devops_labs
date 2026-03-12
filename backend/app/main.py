@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 
 import uvicorn
@@ -12,6 +13,8 @@ from .routers.token import router as token_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Application starting up...")
+    print("Waiting 10 seconds for db up...")
+    await asyncio.sleep(10)
     print("init db schema...")
     await db.init_tables()
 

@@ -1,0 +1,24 @@
+- name: run app
+  hosts: yandex_machines
+  tasks:
+    - name: Copy compose file
+      copy:
+        dest: /home/ubuntu
+        src: ../compose.yaml
+
+    - name: create backend_folder
+      ansible.builtin.file:
+        path: /home/ubuntu/backend
+        state: directory
+
+    - name: Create .env
+      copy:
+        content: "{{ lookup('file', '../backend/.env') }}"
+        dest: /home/ubuntu/backend/.env
+
+    - name: Up app
+      docker_compose:
+        project_src: .
+        files:
+          - "compose.yaml"
+        state: present
