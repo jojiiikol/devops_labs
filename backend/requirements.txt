@@ -1,6 +1,8 @@
 aiosqlite==0.22.1
 annotated-doc==0.0.4
 annotated-types==0.7.0
+ansible==8.7.0
+ansible-core==2.15.13
 anyio==4.12.1
 argon2-cffi==23.1.0
 argon2-cffi-bindings==25.1.0
@@ -12,6 +14,7 @@ certifi==2026.1.4
 cffi==2.0.0
 click==8.1.8
 coverage==7.10.7
+cryptography==46.0.5
 dnspython==2.7.0
 dotenv==0.9.9
 email-validator==2.3.0
@@ -26,6 +29,7 @@ httpcore==1.0.9
 httptools==0.7.1
 httpx==0.28.1
 idna==3.11
+importlib-resources==5.0.7
 importlib_metadata==8.7.1
 iniconfig==2.1.0
 Jinja2==3.1.6
@@ -49,6 +53,7 @@ pytest-cov==7.0.0
 python-dotenv==1.2.1
 python-multipart==0.0.20
 PyYAML==6.0.3
+resolvelib==1.0.1
 rich==14.3.2
 rich-toolkit==0.19.4
 rignore==0.7.6
