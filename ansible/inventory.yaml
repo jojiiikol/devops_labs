@@ -1,6 +1,6 @@
 yandex_machines:
   hosts:
     yandex_vm:
-      ansible_host: 89.169.181.172
+      ansible_host: 178.154.196.207
   vars:
     ansible_user: ubuntu
