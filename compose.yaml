@@ -26,6 +26,16 @@ services:
     depends_on:
       - postgres
 
+  # frontend:
+  #   container_name: backend_app
+  #   image: jojiiikol/note-backend:latest
+  #   ports:
+  #     - "3000:3000"
+  #   restart: always
+  #   depends_on:
+  #     - postgres
+  #     - backend
+
 
 volumes:
   pgdata:
