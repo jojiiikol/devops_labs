@@ -27,14 +27,17 @@ services:
       - postgres
 
   frontend:
-     container_name: frontend_app
-     image: jojiiikol/note-frontend:latest
-     ports:
-       - "3000:3000"
-     restart: always
-     depends_on:
-       - postgres
-       - backend
+    container_name: frontend_app
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    image: devops_labs-frontend:local
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - postgres
+      - backend
 
 
 volumes:

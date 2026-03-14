@@ -17,7 +17,8 @@ RUN bun run build
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/dist .
+COPY --from=prerelease /usr/src/app/server.js .
 
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "index.html" ]
+ENTRYPOINT [ "bun", "run", "server.js" ]

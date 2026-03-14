@@ -71,3 +71,22 @@ npm run dev
 ```
 
 Открыть в браузере: `http://localhost:5173`
+
+## Frontend в Docker 
+
+### 1. Запуск контейнера локально
+
+Сборка и запуск фронтенда из исходников (образ `devops_labs-frontend:local`):
+
+```bash
+docker compose -f compose.yaml build frontend
+docker compose -f compose.yaml up -d frontend
+```
+
+Приложение будет доступно по адресу: `http://localhost:3000`
+
+Чтобы поднять только фронтенд (если postgres и backend уже запущены):
+
+```bash
+docker compose -f compose.yaml up -d --build frontend
+```
