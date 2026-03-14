@@ -1,0 +1,10 @@
+#cloud-config
+users:
+  - name: <username_on_vm>
+    groups: sudo
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - <ssh_key_type> <ssh_pub_key> <ssh_comment>
+      - <ssh_key_type> <ssh_pub_key> <ssh_comment>
+      - ...

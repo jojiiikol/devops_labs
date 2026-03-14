@@ -6,16 +6,6 @@ terraform {
   }
 }
 
-variable "zone" {
-  type = string
-  default = "ru-central1-b"
-}
-
-variable "folder_id" {
-  type        = string
-  default     = "b1gcal6rpf8icohd8peg"
-}
-
 resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
@@ -35,7 +25,7 @@ provider "yandex" {
 }
 
 data "yandex_compute_image" "ubuntu" {
-  family = "ubuntu-2204-lts"
+  family = var.os_image
 }
 
 resource "yandex_compute_disk" "boot-disk-1" {
