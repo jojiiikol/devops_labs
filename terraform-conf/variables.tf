@@ -12,3 +12,5 @@ variable "os_image" {
   type = string
   default = "ubuntu-2204-lts"
 }
+
+

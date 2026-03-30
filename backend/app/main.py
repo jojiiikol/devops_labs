@@ -2,7 +2,7 @@ import asyncio
 from contextlib import asynccontextmanager
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
 from .db.db import db
@@ -22,7 +22,11 @@ async def lifespan(app: FastAPI):
 
     print("Application shutting down...")
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, docs_url="/api/docs")
+app.add_middleware(
+    CORSMiddleware,
+)
+api_router = APIRouter()
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,9 +36,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(token_router)
-app.include_router(notes_router)
-app.include_router(user_router)
+api_router.include_router(token_router)
+api_router.include_router(notes_router)
+api_router.include_router(user_router)
+
+app.include_router(api_router, prefix="/api")
 
 
 if __name__ == "__main__":

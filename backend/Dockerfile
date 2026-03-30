@@ -1,15 +1,21 @@
-FROM python:3.9-slim-bookworm
+FROM python:3.9-alpine3.19 as base
 WORKDIR /app
 ENV TZ='Europe/Moscow'\
     PYTHONDONTWRITEBYTECODE=1\
     PYTHONUNBUFFERED=1\
     PYTHONPATH=/app
 
-
-RUN apt-get update
+FROM base as builder
+RUN apk update
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --user -r requirements.txt && \
+    find /usr/local/lib/python3.9/site-packages -name "*.pyc" -delete && \
+    find /usr/local/lib/python3.9/site-packages -type d -name "__pycache__" -delete
+
+FROM builder as project
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
 
 COPY .env .
 COPY ./*.py .
