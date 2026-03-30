@@ -141,7 +141,7 @@ async def test_get_all_route(client, mock_user_service):
     mock_user_service.get_all.return_value = []
 
     response = client.get(
-        "/user",
+        "api/user",
     )
 
     assert response.status_code == 200
@@ -155,7 +155,7 @@ async def test_get_by_id_route(client, mock_user_service):
     mock_user_service.get_by_id.return_value = user
 
     response = client.get(
-        "/user/1",
+        "api/user/1",
     )
 
     assert response.status_code == 200
@@ -170,7 +170,7 @@ async def test_create_user_route(client, mock_user_service):
     mock_user_service.create.return_value = user
 
     response = client.post(
-        "/user",
+        "api/user",
         json=user_create.model_dump()
     )
 
@@ -186,7 +186,7 @@ async def test_update_user_route(client, mock_permission_user_service):
     mock_permission_user_service.is_owner_update.return_value = user
 
     response = client.put(
-        "/user/1",
+        "api/user/1",
         json=update_user.model_dump()
     )
 
@@ -199,7 +199,7 @@ async def test_delete_user_route(client, mock_permission_user_service):
     app.dependency_overrides[get_user_permission] = lambda: mock_permission_user_service
 
     response = client.delete(
-        "/user/1",
+        "api/user/1",
     )
 
     assert response.status_code == 200

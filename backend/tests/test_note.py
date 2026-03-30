@@ -123,7 +123,7 @@ async def test_get_all_route(client, note_permission_service):
     note_permission_service.read_all.return_value = []
 
     response = client.get(
-        "/note",
+        "api/note",
     )
 
     assert response.status_code == 200
@@ -137,7 +137,7 @@ async def test_get_by_id_route(client, note_permission_service):
     note_permission_service.is_owner_read.return_value = note
 
     response = client.get(
-        "/note/1",
+        "api/note/1",
     )
 
     assert response.status_code == 200
@@ -155,7 +155,7 @@ async def test_create_note_route(client, mock_note_service):
 
 
     response = client.post(
-        "/note",
+        "api/note",
         json=create_note.model_dump()
     )
 
@@ -172,7 +172,7 @@ async def test_update_user_route(client, note_permission_service):
     note_permission_service.is_owner_update.return_value = return_note
 
     response = client.put(
-        "/note/1",
+        "api/note/1",
         json=update_note.model_dump()
     )
 
@@ -185,7 +185,7 @@ async def test_delete_user_route(client, note_permission_service):
     app.dependency_overrides[get_note_permission] = lambda: note_permission_service
 
     response = client.delete(
-        "/note/1",
+        "api/note/1",
     )
 
     assert response.status_code == 200

@@ -146,7 +146,7 @@ def test_token_endpoint_success(client, user_service, mock_repository):
     app.dependency_overrides[get_user_service] = lambda: user_service
 
     response = client.post(
-        "/token",
+        "api/token",
         data={"username": "test_user", "password": "test_password"}
     )
 
