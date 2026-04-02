@@ -12,7 +12,15 @@ jobs:
       backend_changed: ${{ steps.filter.outputs.backend }}
       frontend_changed: ${{ steps.filter.outputs.frontend }}
     steps:
-      - uses: dorny/paths-filter@v4
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            .github
+            backend
+            Frontend
+      - name: Check changes
+        uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
