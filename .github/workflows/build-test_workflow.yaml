@@ -12,7 +12,7 @@ jobs:
       backend_changed: ${{ steps.filter.outputs.backend }}
       frontend_changed: ${{ steps.filter.outputs.frontend }}
     steps:
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
@@ -30,10 +30,10 @@ jobs:
 
   backend-docker:
     needs: [backend, check-changes]
-    if: ${{ needs.changes.outputs.backend_changed == 'true' && needs.backend.result == 'success' }}
+    if: ${{ needs.check-changes.outputs.backend_changed == 'true' && needs.backend.result == 'success' }}
     uses: ./.github/workflows/backend-docker.yaml
 
   frontend-docker:
-    needs: [ backend, check-changes]
-    if: ${{ needs.changes.outputs.frontend_changed == 'true' && needs.frontend.result == 'success' }}
+    needs: [backend, frontend, check-changes]
+    if: ${{ needs.check-changes.outputs.frontend_changed == 'true' && needs.frontend.result == 'success' }}
     uses: ./.github/workflows/frontend-docker.yaml
