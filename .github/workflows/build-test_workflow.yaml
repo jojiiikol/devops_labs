@@ -40,8 +40,14 @@ jobs:
     needs: [backend, check-changes]
     if: ${{ needs.check-changes.outputs.backend_changed == 'true' && needs.backend.result == 'success' }}
     uses: ./.github/workflows/backend-docker.yaml
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
 
   frontend-docker:
     needs: [backend, frontend, check-changes]
     if: ${{ needs.check-changes.outputs.frontend_changed == 'true' && needs.frontend.result == 'success' }}
     uses: ./.github/workflows/frontend-docker.yaml
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
