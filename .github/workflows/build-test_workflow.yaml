@@ -6,9 +6,34 @@ on:
       - 'Frontend/**'
       - '.github/workflows/**'
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend_changed: ${{ steps.filter.outputs.backend }}
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'Frontend/**'
+
   backend:
     uses: ./.github/workflows/backend-workflow.yaml
 
   frontend:
     needs: backend
     uses: ./.github/workflows/frontend_workflow.yaml
+
+  backend-docker:
+    needs: [backend, changes]
+    if: ${{ needs.changes.outputs.backend_changed == 'true' && needs.backend.result == 'success' }}
+    uses: ./.github/workflows/backend-docker.yaml
+
+  frontend-docker:
+    needs: [ backend, changes ]
+    if: ${{ needs.changes.outputs.frontend_changed == 'true' && needs.frontend.result == 'success' }}
+    uses: ./.github/workflows/frontend-docker.yaml

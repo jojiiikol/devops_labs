@@ -1,4 +1,4 @@
-name: backend-docker
+name: frontend-docker
 on:
   workflow_call:
 
@@ -24,12 +24,12 @@ jobs:
         with:
           sparse-checkout: |
             .github
-            backend
+            Frontend
       -
         name: Build and push
         uses: docker/build-push-action@v7
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: ./Frontend
+          file: ./Frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/note-backend:latest
