@@ -29,11 +29,11 @@ jobs:
     uses: ./.github/workflows/frontend_workflow.yaml
 
   backend-docker:
-    needs: [backend, changes]
+    needs: [backend, check-changes]
     if: ${{ needs.changes.outputs.backend_changed == 'true' && needs.backend.result == 'success' }}
     uses: ./.github/workflows/backend-docker.yaml
 
   frontend-docker:
-    needs: [ backend, changes ]
+    needs: [ backend, check-changes]
     if: ${{ needs.changes.outputs.frontend_changed == 'true' && needs.frontend.result == 'success' }}
     uses: ./.github/workflows/frontend-docker.yaml
