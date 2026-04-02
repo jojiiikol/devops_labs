@@ -10,7 +10,6 @@ from .routers.notes import router as notes_router
 from .routers.user import router as user_router
 from .routers.token import router as token_router
 
-# CI check
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Application starting up...")
