@@ -6,6 +6,8 @@ on:
         required: true
       DOCKER_TOKEN:
         required: true
+      VITE_API_BASE_URL:
+        required: true
 
 jobs:
   backend-docker:
@@ -38,3 +40,5 @@ jobs:
           file: ./Frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/note-frontend:latest
+          build-args: |
+            VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}

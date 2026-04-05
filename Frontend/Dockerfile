@@ -1,6 +1,9 @@
 FROM oven/bun:1 AS base
 WORKDIR /usr/src/app
 
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
 FROM base AS install
 RUN mkdir -p /temp/prod
 COPY package.json bun.lock /temp/prod/
