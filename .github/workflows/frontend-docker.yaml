@@ -10,7 +10,7 @@ on:
         required: true
 
 jobs:
-  backend-docker:
+  frontend-docker:
     runs-on: ubuntu-latest
     steps:
       -
