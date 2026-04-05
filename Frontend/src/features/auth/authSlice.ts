@@ -21,7 +21,8 @@ const initialState: AuthState = {
   error: null,
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api'
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const API_BASE = `${API_BASE_URL}/api`
 
 export const login = createAsyncThunk<
   { access_token: string; token_type: string },
