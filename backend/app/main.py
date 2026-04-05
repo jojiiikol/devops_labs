@@ -5,10 +5,12 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
+from app.metrics.middleware import PrometheusMiddleware, setup_metrics_middleware
 from .db.db import db
 from .routers.notes import router as notes_router
 from .routers.user import router as user_router
 from .routers.token import router as token_router
+from .routers.metrics import router as metrics_router
 #check
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,6 +30,8 @@ app.add_middleware(
 )
 api_router = APIRouter()
 
+setup_metrics_middleware(app)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -39,6 +43,7 @@ app.add_middleware(
 api_router.include_router(token_router)
 api_router.include_router(notes_router)
 api_router.include_router(user_router)
+api_router.include_router(metrics_router)
 
 app.include_router(api_router, prefix="/api")
 
