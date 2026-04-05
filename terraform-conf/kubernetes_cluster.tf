@@ -123,7 +123,7 @@ resource "yandex_vpc_security_group" "k8s-public-services" {
   }
   egress {
     protocol       = "ANY"
-    description    = "Правило разрешает весь исходящий трафик. Узлы могут связаться с Yandex Container Registry, Yandex Object Storage, Docker Hub и т. д."
+    description    = "Правило разрешает весь исходящий трафик."
     v4_cidr_blocks = ["0.0.0.0/0"]
     from_port      = 0
     to_port        = 65535
