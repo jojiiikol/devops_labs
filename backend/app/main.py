@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
-from app.metrics.middleware import PrometheusMiddleware, setup_metrics_middleware
+from .metrics.middleware import setup_metrics_middleware
 from .db.db import db
 from .routers.notes import router as notes_router
 from .routers.user import router as user_router

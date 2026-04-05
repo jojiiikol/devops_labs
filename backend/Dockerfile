@@ -19,6 +19,7 @@ ENV PATH=/root/.local/bin:$PATH
 
 COPY ./*.py ./
 COPY ./app/*.py ./app/
+COPY ./app/metrics ./app/metrics
 COPY ./app/entries ./app/entries
 COPY ./app/db ./app/db
 COPY ./app/repository ./app/repository
