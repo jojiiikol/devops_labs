@@ -34,7 +34,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v7
         with:
-          context: .
+          context: ./backend
           file: ./backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/note-backend:latest
