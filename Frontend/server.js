@@ -3,7 +3,7 @@
  * Serves built files and falls back to index.html for SPA routing.
  * Must listen on 0.0.0.0 so the app is reachable outside the container.
  */
-// check
+
 const ROOT = ".";
 const INDEX = "index.html";
 
