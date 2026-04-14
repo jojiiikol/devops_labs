@@ -11,7 +11,7 @@ from .routers.notes import router as notes_router
 from .routers.user import router as user_router
 from .routers.token import router as token_router
 from .routers.metrics import router as metrics_router
-# chae
+# cha
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Application starting up...")
