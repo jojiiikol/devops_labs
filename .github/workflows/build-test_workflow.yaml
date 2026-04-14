@@ -29,15 +29,27 @@ jobs:
             frontend:
               - 'Frontend/**'
 
+  sonar-scanner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
   backend:
+    needs: [ sonar-scanner ]
     uses: ./.github/workflows/backend-workflow.yaml
 
   frontend:
-    needs: backend
+    needs: [ sonar-scanner, backend ]
     uses: ./.github/workflows/frontend_workflow.yaml
 
   backend-docker:
-    needs: [backend, check-changes]
+    needs: [ sonar-scanner, backend, check-changes ]
     if: ${{ needs.check-changes.outputs.backend_changed == 'true' && needs.backend.result == 'success' }}
     uses: ./.github/workflows/backend-docker.yaml
     secrets:
@@ -45,7 +57,7 @@ jobs:
       DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
 
   frontend-docker:
-    needs: [backend, frontend, check-changes]
+    needs: [ sonar-scanner, backend, frontend, check-changes ]
     if: ${{ needs.check-changes.outputs.frontend_changed == 'true' && needs.frontend.result == 'success' }}
     uses: ./.github/workflows/frontend-docker.yaml
     secrets:
