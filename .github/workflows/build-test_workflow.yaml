@@ -47,9 +47,6 @@ jobs:
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
 
-      - name: install_deps
-        run: pip install -r backend/requirements.txt
-
       - name: Install tox and any other packages
         run: pip install tox
 
