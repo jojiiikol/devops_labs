@@ -59,6 +59,11 @@ spec:
                 secretKeyRef:
                   name: api-secret
                   key: AUTH_SECRET_KEY
+            - name: HOST_IP
+              valueFrom:
+                secretKeyRef:
+                  name: api-secret
+                  key: HOST_IP
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler

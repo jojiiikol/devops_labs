@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 class Settings:
+    HOST_IP: str = os.getenv("HOST_IP", "127.0.0.1")
     DB_NAME: str = os.getenv("DB_NAME", "note")
     DB_HOST: str = os.getenv("DB_HOST", "localhost")
     DB_PORT: str = os.getenv("DB_PORT", "5432")

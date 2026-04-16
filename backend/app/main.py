@@ -5,6 +5,7 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 
+from settings import settings
 from .metrics.middleware import setup_metrics_middleware
 from .db.db import db
 from .routers.notes import router as notes_router
@@ -25,9 +26,6 @@ async def lifespan(app: FastAPI):
     print("Application shutting down...")
 
 app = FastAPI(lifespan=lifespan, docs_url="/api/docs")
-app.add_middleware(
-    CORSMiddleware,
-)
 api_router = APIRouter()
 
 setup_metrics_middleware(app)
@@ -49,4 +47,4 @@ app.include_router(api_router, prefix="/api")
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host=settings.HOST_IP, port=8000)
