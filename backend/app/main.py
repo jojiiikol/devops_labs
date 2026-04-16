@@ -46,5 +46,5 @@ api_router.include_router(metrics_router)
 app.include_router(api_router, prefix="/api")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
     uvicorn.run(app, host=settings.HOST_IP, port=8000)
