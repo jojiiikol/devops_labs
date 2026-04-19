@@ -1,15 +1,19 @@
 import { describe, expect, it } from 'vitest'
+import { readFileSync, existsSync } from "fs"
 
 const ROOT = "."
 const INDEX = "index.html"
 
-async function serve(pathname) {
+function serve(pathname) {
   const path = pathname === "/" ? INDEX : pathname.replace(/^\//, "")
-  const file = Bun.file(`${ROOT}/${path}`)
-  if (await file.exists()) {
-    return new Response(file)
+  const filePath = `${ROOT}/${path}`
+  const contentType = filePath.endsWith(".html") ? "text/html" : "text/plain"
+  if (existsSync(filePath)) {
+    return new Response(readFileSync(filePath), {
+      headers: { "Content-Type": contentType },
+    })
   }
-  return new Response(Bun.file(`${ROOT}/${INDEX}`), {
+  return new Response(readFileSync(`${ROOT}/${INDEX}`), {
     headers: { "Content-Type": "text/html" },
   })
 }
