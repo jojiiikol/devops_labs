@@ -56,16 +56,16 @@ jobs:
     needs: [ sonar-scanner ]
     uses: ./.github/workflows/backend-workflow.yaml
 
-  frontend:
-    needs: [ sonar-scanner, backend ]
-    uses: ./.github/workflows/frontend_workflow.yaml
-
   backend-docker:
     needs: [ sonar-scanner, backend ]
     uses: ./.github/workflows/backend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+  frontend:
+    needs: [ sonar-scanner, backend, backend-docker ]
+    uses: ./.github/workflows/frontend_workflow.yaml
 
   frontend-docker:
     needs: [ sonar-scanner, backend, frontend, backend-docker ]
