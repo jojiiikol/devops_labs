@@ -30,7 +30,9 @@ jobs:
     uses: ./.github/workflows/frontend_workflow.yaml
 
   frontend-docker:
-    needs: [ sonar-scanner, backend, frontend, backend-docker ]
+    permissions:
+      contents: write
+#    needs: [ sonar-scanner, backend, frontend, backend-docker ]
     uses: ./.github/workflows/frontend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
