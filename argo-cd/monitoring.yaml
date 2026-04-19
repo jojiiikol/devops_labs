@@ -3,38 +3,14 @@ kind: Application
 metadata:
   name: kube-prometheus-stack
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
-    targetRevision: 56.0.0
+    targetRevision: 58.0.0
     helm:
-      releaseName: prometheus-stack
-      values: |
-        grafana:
-          service:
-            type: ClusterIP
-          persistence:
-            enabled: true
-            size: 10Gi
-        
-        prometheus:
-          prometheusSpec:
-            storageSpec:
-              volumeClaimTemplate:
-                spec:
-                  accessModes: ["ReadWriteOnce"]
-                  resources:
-                    requests:
-                      storage: 50Gi
-        
-        alertmanager:
-          enabled: true
+      releaseName: kube-prometheus-stack
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -44,4 +20,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
