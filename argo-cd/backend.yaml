@@ -14,11 +14,12 @@ spec:
     metadata:
       labels:
         app: backend
-        annotations:
-          argocd.argoproj.io/sync-wave: "5"
+      annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
         prometheus.io/path: "/api/metrics"
+        argocd.argoproj.io/sync-wave: "6"
+
     spec:
       containers:
         - name: backend
