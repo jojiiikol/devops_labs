@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/backend-workflow.yaml
 
   frontend:
-    needs: [ sonar-scanner, backend, backend-docker ]
+    needs: [ sonar-scanner, backend ]
     uses: ./.github/workflows/frontend_workflow.yaml
 
   dokcer_pusher:
