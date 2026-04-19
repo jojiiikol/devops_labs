@@ -43,7 +43,7 @@ jobs:
 
       - name: Update image tag in deployment
         run: |
-          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}/note-backend:.*|image: ${{ github.sha }}|g" argo-cd/backend.yaml
+          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}/note-backend:.*|image: ${{ secrets.DOCKER_USERNAME }}/note-backend:${{ github.sha }}|g" argo-cd/backend.yaml
 
       - name: Commit new tag
         run: |
