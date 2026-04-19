@@ -9,6 +9,8 @@ on:
 
 jobs:
   backend-docker:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
