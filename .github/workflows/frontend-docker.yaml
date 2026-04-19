@@ -1,4 +1,4 @@
-name: dokcer_pusher
+name: frontend-docker
 on:
   workflow_call:
     secrets:
@@ -10,9 +10,7 @@ on:
         required: true
 
 jobs:
-  docker_build_and_push:
-    permissions:
-      contents: write
+  frontend-docker:
     runs-on: ubuntu-latest
     steps:
       -
@@ -34,23 +32,8 @@ jobs:
           sparse-checkout: |
             .github
             Frontend
-            backend
-            argo-cd
-
-      - name: Build and push backend
-        uses: docker/build-push-action@v7
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/note-backend:${{ github.sha }}
-
-      - name: Update image tag in deployment
-        run: |
-          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}/note-backend:.*|image: ${{ secrets.DOCKER_USERNAME }}/note-backend:${{ github.sha }}|g" argo-cd/backend.yaml
-
       -
-        name: Build and push frontend
+        name: Build and push
         uses: docker/build-push-action@v7
         with:
           context: ./Frontend
@@ -59,16 +42,3 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/note-frontend:${{ github.sha }}
           build-args: |
             VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}
-
-      - name: Update image tag in deployment
-        run: |
-          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}/note-frontend:.*|image: ${{ secrets.DOCKER_USERNAME }}/note-frontend:${{ github.sha }}|g" argo-cd/frontend.yaml
-
-      - name: Commit new tag
-        run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add argo-cd/frontend.yaml
-          git add argo-cd/backend.yaml
-          git diff --staged --quiet || git commit -m "Update image tags to ${{ github.sha }} [skip ci]"
-          git push
