@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: jojiiikol/note-frontend:ee910fa62dd4c0bb2ca57dec0664ce387d925fbc
+          image: jojiiikol/note-frontend:96a2eb93fbee9b1a7f3ea19e65d0f40b5a1fcaa8
           ports:
             - containerPort: 3000
