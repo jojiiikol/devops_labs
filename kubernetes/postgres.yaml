@@ -3,6 +3,8 @@ kind: StatefulSet
 metadata:
   name: db
   namespace: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   serviceName: "postgres"
   replicas: 1
