@@ -4,7 +4,7 @@
  * Must listen on 0.0.0.0 so the app is reachable outside the container.
  */
 
-
+// check
 const ROOT = ".";
 const INDEX = "index.html";
 
