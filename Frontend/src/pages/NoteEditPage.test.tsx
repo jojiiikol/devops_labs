@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { renderWithProviders } from '../test/test-utils'
 import NoteEditPage, {
   composeTextFromTitleAndBody,
@@ -24,6 +24,24 @@ describe('splitTitleAndBodyFromText', () => {
     expect(title).toBe('Title')
     expect(body).toBe('Body')
   })
+
+  it('handles empty string', () => {
+    const { title, body } = splitTitleAndBodyFromText('')
+    expect(title).toBe('')
+    expect(body).toBe('')
+  })
+
+  it('handles title with leading/trailing spaces', () => {
+    const { title, body } = splitTitleAndBodyFromText('  Title  \nBody')
+    expect(title).toBe('Title')
+    expect(body).toBe('Body')
+  })
+
+  it('handles multiple leading newlines in body', () => {
+    const { title, body } = splitTitleAndBodyFromText('Title\n\n\nBody')
+    expect(title).toBe('Title')
+    expect(body).toBe('Body')
+  })
 })
 
 describe('composeTextFromTitleAndBody', () => {
@@ -38,6 +56,14 @@ describe('composeTextFromTitleAndBody', () => {
 
   it('joins title and body with newline when both are present', () => {
     expect(composeTextFromTitleAndBody('Title', 'Body')).toBe('Title\nBody')
+  })
+
+  it('handles null body', () => {
+    expect(composeTextFromTitleAndBody('Title', null as unknown as string)).toBe('Title')
+  })
+
+  it('trims title', () => {
+    expect(composeTextFromTitleAndBody('  Title  ', 'Body')).toBe('Title\nBody')
   })
 })
 
@@ -64,5 +90,75 @@ describe('NoteEditPage component', () => {
       ),
     ).toBeInTheDocument()
   })
-})
 
+  it('shows edit page title when id is provided', () => {
+    renderWithProviders(<NoteEditPage />, {
+      route: '/notes/1',
+      routerProps: { initialIndex: 0 },
+      preloadedState: {
+        auth: { user: { id: 1, username: 'u' }, accessToken: 'token', status: 'idle', error: null },
+        notes: { items: [], selectedNote: { id: 1, title: 'Test', text: 'Content', user_id: 1 }, status: 'succeeded', error: null },
+      },
+    })
+
+    expect(screen.getByRole('heading', { name: /Редактирование заметки/i })).toBeInTheDocument()
+  })
+
+  it('shows loading state when fetching note', () => {
+    renderWithProviders(<NoteEditPage />, {
+      route: '/notes/1',
+      routerProps: { initialIndex: 0 },
+      preloadedState: {
+        auth: { user: { id: 1, username: 'u' }, accessToken: 'token', status: 'idle', error: null },
+        notes: { items: [], selectedNote: null, status: 'loading', error: null },
+      },
+    })
+
+    expect(screen.getByText(/Загружаем заметку/i)).toBeInTheDocument()
+  })
+
+  it('shows delete button when editing existing note', () => {
+    renderWithProviders(<NoteEditPage />, {
+      route: '/notes/1',
+      routerProps: { initialIndex: 0 },
+      preloadedState: {
+        auth: { user: { id: 1, username: 'u' }, accessToken: 'token', status: 'idle', error: null },
+        notes: { items: [], selectedNote: { id: 1, title: 'Test', text: 'Content', user_id: 1 }, status: 'succeeded', error: null },
+      },
+    })
+
+    expect(screen.getByRole('button', { name: /Удалить/i })).toBeInTheDocument()
+  })
+
+  it('shows helper text', () => {
+    renderWithProviders(<NoteEditPage />, {
+      route: '/notes/new',
+      routerProps: { initialIndex: 0 },
+      preloadedState: {
+        auth: { user: { id: 1, username: 'u' }, accessToken: 'token', status: 'idle', error: null },
+        notes: { items: [], selectedNote: null, status: 'idle', error: null },
+      },
+    })
+
+    expect(screen.getByText(/Первая строка будет заголовком/i)).toBeInTheDocument()
+  })
+
+  it('clears client error on change', async () => {
+    renderWithProviders(<NoteEditPage />, {
+      route: '/notes/new',
+      routerProps: { initialIndex: 0 },
+      preloadedState: {
+        auth: { user: { id: 1, username: 'u' }, accessToken: 'token', status: 'idle', error: null },
+        notes: { items: [], selectedNote: null, status: 'idle', error: null },
+      },
+    })
+
+    const textarea = screen.getByLabelText(/Заметка/i)
+    fireEvent.change(textarea, { target: { value: 'New content' } })
+
+    const submit = screen.getByRole('button', { name: /Сохранить/i })
+    fireEvent.click(submit)
+
+    expect(screen.queryByText(/Первая строка заметки должна быть заголовком/i)).not.toBeInTheDocument()
+  })
+})

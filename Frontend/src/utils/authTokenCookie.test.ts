@@ -27,5 +27,15 @@ describe('authTokenCookie utilities', () => {
     document.cookie = 'notes_access_token=%E0%A4%A'
     expect(getAuthTokenCookie()).toBe('%E0%A4%A')
   })
+
+  it('returns null for empty cookie value', () => {
+    document.cookie = 'notes_access_token='
+    expect(getAuthTokenCookie()).toBeNull()
+  })
+
+  it('handles token with equals sign', () => {
+    setAuthTokenCookie('abc=def')
+    expect(getAuthTokenCookie()).toBe('abc=def')
+  })
 })
 
