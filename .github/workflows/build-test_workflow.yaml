@@ -17,6 +17,8 @@ jobs:
     uses: ./.github/workflows/backend-workflow.yaml
 
   backend-docker:
+    permissions:
+      contents: write
 #    needs: [ sonar-scanner, backend ]
     uses: ./.github/workflows/backend-docker.yaml
     secrets:
