@@ -16,24 +16,23 @@ jobs:
     needs: [ sonar-scanner ]
     uses: ./.github/workflows/backend-workflow.yaml
 
+  frontend:
+    needs: [ sonar-scanner, backend ]
+    uses: ./.github/workflows/frontend_workflow.yaml
+
   backend-docker:
     permissions:
       contents: write
-#    needs: [ sonar-scanner, backend ]
+    needs: [ sonar-scanner, backend, frontend ]
     uses: ./.github/workflows/backend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
 
-  frontend:
-    needs: [ sonar-scanner, backend, backend-docker ]
-    uses: ./.github/workflows/frontend_workflow.yaml
-
   frontend-docker:
     permissions:
       contents: write
-#    needs: [ sonar-scanner, backend, frontend, backend-docker ]
-    needs: [ backend-docker ]
+    needs: [ sonar-scanner, backend, frontend, backend-docker ]
     uses: ./.github/workflows/frontend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -41,7 +40,7 @@ jobs:
       VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
 
   manifest-update:
-    needs: [ backend-docker, frontend-docker ]
+    needs: [ sonar-scanner, backend, frontend, backend-docker, backend-docker, frontend-docker ]
     permissions:
       contents: write
     runs-on: ubuntu-latest
