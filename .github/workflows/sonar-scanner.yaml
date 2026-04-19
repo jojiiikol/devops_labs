@@ -1,6 +1,9 @@
 name: SonarQube_Scanner
 on:
   workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: true
 jobs:
   sonar-scanner:
     name: SonarQube Scanner
@@ -24,7 +27,7 @@ jobs:
       - name: Install tox
         run: pip install tox
 
-      - name: Run tox
+      - name: Backend coverage
         run: tox -e py
 
       - name: node_install
@@ -38,7 +41,7 @@ jobs:
         run: npm ci
         working-directory: Frontend
 
-      - name: Coverage
+      - name: Frontend coverage
         run: npm run test:coverage
         working-directory: Frontend
 
