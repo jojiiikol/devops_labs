@@ -6,31 +6,9 @@ on:
       - 'Frontend/**'
       - '.github/workflows/**'
 jobs:
-  check-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      backend_changed: ${{ steps.filter.outputs.backend }}
-      frontend_changed: ${{ steps.filter.outputs.frontend }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          sparse-checkout: |
-            .github
-            backend
-            Frontend
-      - name: Check changes
-        uses: dorny/paths-filter@v4
-        id: filter
-        with:
-          filters: |
-            backend:
-              - 'backend/**'
-            frontend:
-              - 'Frontend/**'
 
   sonar-scanner:
-    name: SonarQube Cloud
+    name: SonarQube Scanner
     runs-on: ubuntu-latest
     steps:
       - name: checkout_repository
@@ -48,7 +26,7 @@ jobs:
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
 
-      - name: Install tox and any other packages
+      - name: Install tox
         run: pip install tox
 
       - name: Run tox
@@ -65,7 +43,7 @@ jobs:
         run: npm ci
         working-directory: Frontend
 
-      - name: test
+      - name: Coverage
         run: npm run test:coverage
         working-directory: Frontend
 
@@ -83,16 +61,14 @@ jobs:
     uses: ./.github/workflows/frontend_workflow.yaml
 
   backend-docker:
-    needs: [ sonar-scanner, backend, check-changes ]
-    if: ${{ needs.check-changes.outputs.backend_changed == 'true' && needs.backend.result == 'success' }}
+    needs: [ sonar-scanner, backend ]
     uses: ./.github/workflows/backend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
 
   frontend-docker:
-    needs: [ sonar-scanner, backend, frontend, check-changes ]
-    if: ${{ needs.check-changes.outputs.frontend_changed == 'true' && needs.frontend.result == 'success' }}
+    needs: [ sonar-scanner, backend, frontend, backend-docker ]
     uses: ./.github/workflows/frontend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
