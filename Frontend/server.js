@@ -4,7 +4,7 @@
  * Must listen on 0.0.0.0 so the app is reachable outside the container.
  */
 
-// c
+//
 import { readFileSync, existsSync } from "fs";
 
 const ROOT = ".";
