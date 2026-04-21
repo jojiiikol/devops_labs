@@ -18,7 +18,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
         prometheus.io/path: "/api/metrics"
-        argocd.argoproj.io/sync-wave: "6"
+        argocd.argoproj.io/sync-wave: "4"
 
     spec:
       containers:
@@ -72,7 +72,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: backend-hpa
   annotations:
-    argocd.argoproj.io/sync-wave: "6"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

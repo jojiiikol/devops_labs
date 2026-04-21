@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
   name: postgres
   namespace: default
 spec:
@@ -17,7 +17,7 @@ kind: Service
 metadata:
   name: backend-service
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   type: NodePort
   selector:
@@ -32,7 +32,7 @@ kind: Service
 metadata:
   name: frontend-service
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   type: NodePort
   selector:
@@ -48,7 +48,7 @@ metadata:
   name: grafana-nodeport
   namespace: monitoring
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   type: NodePort
   selector:
@@ -67,7 +67,7 @@ metadata:
   name: prometheus-nodeport
   namespace: monitoring
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   type: NodePort
   selector:
@@ -88,7 +88,7 @@ metadata:
   labels:
     release: prometheus-stack
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   selector:
     matchLabels:
