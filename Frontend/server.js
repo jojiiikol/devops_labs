@@ -4,22 +4,22 @@
  * Must listen on 0.0.0.0 so the app is reachable outside the container.
  */
 
-//
-import { readFileSync, existsSync } from "fs";
+
+
 
 const ROOT = ".";
 const INDEX = "index.html";
 
-function serve(pathname) {
+async function serve(pathname) {
   const path = pathname === "/" ? INDEX : pathname.replace(/^\//, "");
-  const filePath = `${ROOT}/${path}`;
-  const contentType = filePath.endsWith(".html") ? "text/html" : "text/plain";
-  if (existsSync(filePath)) {
-    return new Response(readFileSync(filePath), {
-      headers: { "Content-Type": contentType },
-    });
+  const file = Bun.file(`${ROOT}/${path}`);
+  if (await file.exists()) {
+    return new Response(file);
+
+
+
   }
-  return new Response(readFileSync(`${ROOT}/${INDEX}`), {
+  return new Response(Bun.file(`${ROOT}/${INDEX}`), {
     headers: { "Content-Type": "text/html" },
   });
 }
