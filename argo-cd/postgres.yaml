@@ -4,7 +4,7 @@ metadata:
   name: db
   namespace: default
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   serviceName: "postgres"
   replicas: 1
