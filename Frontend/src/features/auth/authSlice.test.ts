@@ -85,6 +85,17 @@ describe('authSlice extraReducers', () => {
     expect(state.error).toBe('Ошибка пользователя')
   })
 
+  it('handles fetchMe rejected with no payload', () => {
+    const user: User = { id: 1, username: 'john' }
+    let state = authReducer(baseState, fetchMe.fulfilled(user, 'reqId', undefined))
+    state = authReducer(
+      state,
+      fetchMe.rejected(new Error('e'), 'reqId', undefined),
+    )
+    expect(state.status).toBe('failed')
+    expect(state.error).toBe('Ошибка загрузки пользователя')
+  })
+
   it('handles register lifecycle', () => {
     let state = authReducer(baseState, register.pending('reqId', { username: 'u', password: 'p' }))
     expect(state.status).toBe('loading')
@@ -102,6 +113,16 @@ describe('authSlice extraReducers', () => {
     )
     expect(state.status).toBe('failed')
     expect(state.error).toBe('Ошибка')
+  })
+
+  it('handles register rejected with no payload', () => {
+    let state = authReducer(baseState, register.pending('reqId', { username: 'u', password: 'p' }))
+    state = authReducer(
+      state,
+      register.rejected(new Error('e'), 'reqId', { username: 'u', password: 'p' }),
+    )
+    expect(state.status).toBe('failed')
+    expect(state.error).toBe('Ошибка регистрации')
   })
 })
 
