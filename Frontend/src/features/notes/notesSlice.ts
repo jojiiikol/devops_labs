@@ -236,4 +236,5 @@ const notesSlice = createSlice({
 
 export const { clearSelected } = notesSlice.actions
 export default notesSlice.reducer
+export { normalizeNote }
 
