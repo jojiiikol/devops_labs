@@ -6,6 +6,10 @@ on:
         required: true
       DOCKER_TOKEN:
         required: true
+      TELEGRAM_TOKEN:
+        required: true
+      TELEGRAM_TO:
+        required: true
 
 jobs:
   backend-docker:
@@ -38,3 +42,18 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/note-backend:${{ github.sha }}
+
+      - name: Notify Telegram
+        if: always()
+        uses: appleboy/telegram-action@v1.0.1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            *Job:* `backend-docker`
+            *Status:* `${{ job.status }}`
+            *Workflow:* `${{ github.workflow }}`
+            *Branch:* `${{ github.ref_name }}`
+            *Commit:* `${{ github.sha }}`
+            *Run:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
