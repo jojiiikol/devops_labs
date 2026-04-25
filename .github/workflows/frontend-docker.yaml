@@ -53,11 +53,11 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
+          format: html
           message: |
-            *Job:* `frontend-docker`
-            *Status:* `${{ job.status }}`
-            *Workflow:* `${{ github.workflow }}`
-            *Branch:* `${{ github.ref_name }}`
-            *Commit:* `${{ github.sha }}`
-            *Run:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            <b>Job:</b> frontend-docker
+            <b>Status:</b> ${{ job.status }}
+            <b>Workflow:</b> ${{ github.workflow }}
+            <b>Branch:</b> ${{ github.ref_name }}
+            <b>Commit:</b> ${{ github.sha }}
+            <b>Run:</b> https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

@@ -39,14 +39,14 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
+          format: html
           message: |
-            *Job:* `frontend-test`
-            *Status:* `${{ job.status }}`
-            *Workflow:* `${{ github.workflow }}`
-            *Branch:* `${{ github.ref_name }}`
-            *Commit:* `${{ github.sha }}`
-            *Run:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            <b>Job:</b> frontend-test
+            <b>Status:</b> ${{ job.status }}
+            <b>Workflow:</b> ${{ github.workflow }}
+            <b>Branch:</b> ${{ github.ref_name }}
+            <b>Commit:</b> ${{ github.sha }}
+            <b>Run:</b> https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
   build:
     runs-on:
@@ -81,11 +81,11 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
+          format: html
           message: |
-            *Job:* `frontend-build`
-            *Status:* `${{ job.status }}`
-            *Workflow:* `${{ github.workflow }}`
-            *Branch:* `${{ github.ref_name }}`
-            *Commit:* `${{ github.sha }}`
-            *Run:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            <b>Job:</b> frontend-build
+            <b>Status:</b> ${{ job.status }}
+            <b>Workflow:</b> ${{ github.workflow }}
+            <b>Branch:</b> ${{ github.ref_name }}
+            <b>Commit:</b> ${{ github.sha }}
+            <b>Run:</b> https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
