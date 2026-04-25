@@ -1,6 +1,11 @@
 name: frontend_CI
 on:
   workflow_call:
+    secrets:
+      TELEGRAM_TOKEN:
+        required: true
+      TELEGRAM_TO:
+        required: true
 jobs:
   test:
     runs-on:
@@ -28,6 +33,21 @@ jobs:
         run: npm run test
         working-directory: Frontend
 
+      - name: Notify Telegram
+        if: always()
+        uses: appleboy/telegram-action@v1.0.1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: html
+          message: |
+            <b>Job:</b> frontend-test
+            <b>Status:</b> ${{ job.status == 'success' && '✅ success' || job.status == 'failure' && '❌ failure' || job.status == 'cancelled' && '⚪ cancelled' || '🟡 ' }}${{ job.status != 'success' && job.status != 'failure' && job.status != 'cancelled' && job.status || '' }}
+            <b>Workflow:</b> ${{ github.workflow }}
+            <b>Branch:</b> ${{ github.ref_name }}
+            <b>Commit:</b> ${{ github.sha }}
+            ${{ job.status != 'success' && format('<b>Run:</b> https://github.com/{0}/actions/runs/{1}', github.repository, github.run_id) || '' }}
+
   build:
     runs-on:
       ubuntu-latest
@@ -54,3 +74,18 @@ jobs:
       - name: build
         run: npm run build
         working-directory: Frontend
+
+      - name: Notify Telegram
+        if: always()
+        uses: appleboy/telegram-action@v1.0.1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: html
+          message: |
+            <b>Job:</b> frontend-build
+            <b>Status:</b> ${{ job.status == 'success' && '✅ success' || job.status == 'failure' && '❌ failure' || job.status == 'cancelled' && '⚪ cancelled' || '🟡 ' }}${{ job.status != 'success' && job.status != 'failure' && job.status != 'cancelled' && job.status || '' }}
+            <b>Workflow:</b> ${{ github.workflow }}
+            <b>Branch:</b> ${{ github.ref_name }}
+            <b>Commit:</b> ${{ github.sha }}
+            ${{ job.status != 'success' && format('<b>Run:</b> https://github.com/{0}/actions/runs/{1}', github.repository, github.run_id) || '' }}

@@ -11,14 +11,22 @@ jobs:
     uses: ./.github/workflows/sonar-scanner.yaml
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
 
   backend:
     needs: [ sonar-scanner ]
     uses: ./.github/workflows/backend-workflow.yaml
+    secrets:
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
 
   frontend:
     needs: [ sonar-scanner, backend ]
     uses: ./.github/workflows/frontend_workflow.yaml
+    secrets:
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
 
   backend-docker:
     permissions:
@@ -28,6 +36,8 @@ jobs:
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
 
   frontend-docker:
     permissions:
@@ -38,6 +48,8 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
 
   manifest-update:
 #    needs: [ sonar-scanner, backend, frontend, backend-docker, frontend-docker ]
@@ -65,3 +77,18 @@ jobs:
           git add argo-cd
           git diff --staged --quiet || git commit -m "Update image to ${{ github.sha }} [skip ci]"
           git push
+
+      - name: Notify Telegram
+        if: always()
+        uses: appleboy/telegram-action@v1.0.1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: html
+          message: |
+            <b>Job:</b> manifest-update
+            <b>Status:</b> ${{ job.status == 'success' && '✅ success' || job.status == 'failure' && '❌ failure' || job.status == 'cancelled' && '⚪ cancelled' || '🟡 ' }}${{ job.status != 'success' && job.status != 'failure' && job.status != 'cancelled' && job.status || '' }}
+            <b>Workflow:</b> ${{ github.workflow }}
+            <b>Branch:</b> ${{ github.ref_name }}
+            <b>Commit:</b> ${{ github.sha }}
+            ${{ job.status != 'success' && format('<b>Run:</b> https://github.com/{0}/actions/runs/{1}', github.repository, github.run_id) || '' }}
