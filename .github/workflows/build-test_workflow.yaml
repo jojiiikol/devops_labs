@@ -1,4 +1,4 @@
-name: build-test_CI
+name: main_CI
 on:
   push:
     paths:
@@ -31,7 +31,7 @@ jobs:
   backend-docker:
     permissions:
       contents: write
-#    needs: [ sonar-scanner, backend, frontend ]
+    needs: [ sonar-scanner, backend, frontend ]
     uses: ./.github/workflows/backend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -42,7 +42,7 @@ jobs:
   frontend-docker:
     permissions:
       contents: write
-#    needs: [ sonar-scanner, backend, frontend, backend-docker ]
+    needs: [ sonar-scanner, backend, frontend, backend-docker ]
     uses: ./.github/workflows/frontend-docker.yaml
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -52,8 +52,7 @@ jobs:
       TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
 
   manifest-update:
-#    needs: [ sonar-scanner, backend, frontend, backend-docker, frontend-docker ]
-    needs: [ backend-docker, frontend-docker ]
+    needs: [ sonar-scanner, backend, frontend, backend-docker, frontend-docker ]
     permissions:
       contents: write
     uses: ./.github/workflows/manifest-update.yaml
