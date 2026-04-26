@@ -77,7 +77,7 @@ jobs:
 
       - name: Notify Telegram
         if: always()
-        uses: ./.github/actions/notifier/telegram-notifier.yaml
+        uses: ./.github/actions/notifier/action.yaml
         with:
           job-name: 'frontend-build'
           job-status: ${{ job.status }}

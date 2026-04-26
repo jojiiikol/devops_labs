@@ -80,7 +80,7 @@ jobs:
 
       - name: Notify Telegram
         if: always()
-        uses: ./.github/actions/notifier/telegram-notifier.yaml
+        uses: ./.github/actions/notifier/action.yaml
         with:
           job-name: 'manifest-update'
           job-status: ${{ job.status }}
