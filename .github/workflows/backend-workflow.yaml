@@ -82,5 +82,5 @@ jobs:
         with:
           job-name: 'backend-build'
           job-status: ${{ job.status }}
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
+          telegram-to: ${{ secrets.TELEGRAM_TO }}
+          telegram-token: ${{ secrets.TELEGRAM_TOKEN }}
