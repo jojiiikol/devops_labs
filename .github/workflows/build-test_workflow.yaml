@@ -56,33 +56,9 @@ jobs:
     needs: [ backend-docker, frontend-docker ]
     permissions:
       contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          sparse-checkout: |
-            .github
-            argo-cd
-
-      - name: Update image tag in deployments
-        run: |
-          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}/note-frontend:.*|image: ${{ secrets.DOCKER_USERNAME }}/note-frontend:${{ github.sha }}|g" argo-cd/frontend.yaml
-          sed -i "s|image: ${{ secrets.DOCKER_USERNAME }}/note-backend:.*|image: ${{ secrets.DOCKER_USERNAME }}/note-backend:${{ github.sha }}|g" argo-cd/backend.yaml
-
-      - name: Commit new tag
-        run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add argo-cd
-          git diff --staged --quiet || git commit -m "Update image to ${{ github.sha }} [skip ci]"
-          git push
-
-      - name: Notify Telegram
-        if: always()
-        uses: ./.github/actions/notifier
-        with:
-          job-name: 'manifest-update'
-          job-status: ${{ job.status }}
-          telegram-to: ${{ secrets.TELEGRAM_TO }}
-          telegram-token: ${{ secrets.TELEGRAM_TOKEN }}
+    uses: ./.github/workflows/manifest-update.yaml
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
