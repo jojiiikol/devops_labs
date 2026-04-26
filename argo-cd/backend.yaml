@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: jojiiikol/note-backend:4c28d8468ac7e775bad0a74129f15848e0d60e11
+          image: jojiiikol/note-backend:7de71dd4d7aea78176adbe8d07394b58a36521dc
           ports:
             - containerPort: 8000
             - name: metrics
