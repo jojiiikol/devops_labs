@@ -22,6 +22,8 @@ def test_lifespan_integration(mock_db_init, mock_sleep):
         mock_sleep.assert_called_once_with(10)
         mock_db_init.assert_called_once()
 
+        print(1/0)
+
         response = client.get("/")
         assert response.status_code in (200, 404)
 
