@@ -4,6 +4,7 @@ from fastapi import Depends, HTTPException
 from ..repository.note import NoteRepository, get_note_repository
 from ..entries.schemas import NoteSchema, CreateNoteSchema, CreateNoteInputSchema, UpdateNoteSchema, UserSchema
 
+# check?
 
 class NoteService:
     def __init__(self, repository: NoteRepository):
