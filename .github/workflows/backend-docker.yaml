@@ -41,6 +41,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: ${{ secrets.DOCKER_USERNAME }}/note-backend:${{ github.sha }}
 
       - name: Notify Telegram
@@ -51,4 +52,3 @@ jobs:
           job-status: ${{ job.status }}
           telegram-to: ${{ secrets.TELEGRAM_TO }}
           telegram-token: ${{ secrets.TELEGRAM_TOKEN }}
-
